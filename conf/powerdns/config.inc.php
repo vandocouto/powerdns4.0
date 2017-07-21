@@ -12,5 +12,5 @@ $session_key            = 'c9YO%fESf9lbCO~^cfJBWN2-[kokoijn!i-~qUP({';
 $iface_lang             = 'en_EN';
 
 $dns_hostmaster         = 'icasei.com.br';
-$dns_ns1                = 'ns10.icasei.com.br';
-$dns_ns2                = 'ns11.icasei.com.br';
+$dns_ns1                = 'ns10.tutoriaisgnulinux.com.br';
+$dns_ns2                = 'ns11.tutoriaisgnulinux.com.br';
