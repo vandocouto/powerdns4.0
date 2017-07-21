@@ -15,8 +15,8 @@ services:
   volumes:
    - mysql:/etc/mysql/conf.d/
    - data:/var/lib/mysql/
-  hostname: slave
-  domainname: slave
+  hostname: mysqlslave
+  domainname: mysqlslave
   logging:
     driver: "json-file"
     options:
@@ -41,8 +41,8 @@ services:
    - mynet
   volumes:
    - powerdns:/var/log
-  hostname: slave
-  domainname: slave
+  hostname: powermaster
+  domainname: powermaster
   logging:
     driver: "json-file"
     options:
