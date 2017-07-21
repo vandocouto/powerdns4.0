@@ -7,7 +7,7 @@ $db_name                = 'MYSQL_DB';
 $db_type                = 'mysql';
 $db_layer               = 'PDO';
 
-$session_key            = 'c9YO%fESf9lbCO~^cfJBWN2-[7IyiEzw53kR5!i-~qUP({';
+$session_key            = 'c9YO%fESf9lbCO~^cfJBWN2-[kokoijn!i-~qUP({';
 
 $iface_lang             = 'en_EN';
 
