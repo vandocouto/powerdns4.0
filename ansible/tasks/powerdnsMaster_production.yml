@@ -1,0 +1,40 @@
+---
+- name: "Compose powerdnsMaster | Create directory /docker-compose/powerdnsMaster"
+  file: path=/docker-compose/powerdnsMaster state=directory mode=0755
+  when: "'master' in group_names"
+
+- name: "Compose powerdnsMaster | Docker login"
+  command: docker login -u {{ dockerlogin }}  -p {{ dockerpass }}  docker.tutoriaisgnulinux.com.com.br
+  when: "'master' in group_names"
+
+- name: "Compose powerdnsMaster | Download image"
+  docker_image:
+   name: docker.tutoriaisgnulinux.com.com.br/powerdns:{{ powerdnsversion }}
+  when: "'master' in group_names"
+
+- name: "Compose mysqlMaster | Download image"
+  docker_image:
+   name: docker.tutoriaisgnulinux.com.com.br/mysql:{{ powerdnsversion }}
+  when: "'master' in group_names"
+
+- name: "Compose powerdnsMaster | Docker volume"
+  shell: docker volume create mysql && docker volume create data && docker volume create powerdns
+  when: "'master' in group_names"
+
+- name: "Compose powerdnsMaster | file config"
+  template:
+   src: "{{item.temp}}"
+   dest: "{{item.ori}}"
+   backup: yes
+   mode: 0644
+  with_items:
+   - {ori: /docker-compose/powerdnsMaster/docker-compose.yml, temp: powerdnsMaster_production.docker-compose.yml}
+   - {ori: /var/lib/docker/volumes/mysql/_data/master.cnf, temp: master.cnf.j2}
+   - {ori: /docker-compose/powerdnsMaster/environment-master.env, temp: environment-master.j2}
+  when: "'master' in group_names"
+
+- name: "Compose powerdnsMaster | Deploy container"
+  command: docker-compose -f /docker-compose/powerdnsMaster/docker-compose.yml up -d
+  when: "'master' in group_names"
+
+

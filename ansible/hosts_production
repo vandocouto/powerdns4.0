@@ -1,0 +1,13 @@
+[master]
+ns10.tutoriaisgnulinux.com
+
+[slave]
+ns11.tutoriaisgnulinux.com
+
+[all:vars]
+ansible_ssh_user=ubuntu
+ansible_ssh_private_key_file=
+dockerlogin=
+dockerpass=
+powerdnsMasterreplica=1
+powerdnsSlavereplica=1

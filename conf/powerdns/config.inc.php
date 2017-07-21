@@ -1,0 +1,16 @@
+<?php
+
+$db_host                = '192.168.0.2';
+$db_user                = 'MYSQL_USER';
+$db_pass                = 'MYSQL_PASS';
+$db_name                = 'MYSQL_DB';
+$db_type                = 'mysql';
+$db_layer               = 'PDO';
+
+$session_key            = 'c9YO%fESf9lbCO~^cfJBWN2-[7IyiEzw53kR5!i-~qUP({';
+
+$iface_lang             = 'en_EN';
+
+$dns_hostmaster         = 'icasei.com.br';
+$dns_ns1                = 'ns10.icasei.com.br';
+$dns_ns2                = 'ns11.icasei.com.br';

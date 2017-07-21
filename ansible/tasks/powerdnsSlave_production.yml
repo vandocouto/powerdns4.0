@@ -1,0 +1,38 @@
+---
+- name: "Compose powerdnsSlave | Create directory /docker-compose/powerdnsSlave"
+  file: path=/docker-compose/powerdnsSlave state=directory mode=0755
+  when: "'slave' in group_names"
+
+- name: "Compose powerdnsSlave | Docker login"
+  command: docker login -u {{ dockerlogin }}  -p {{ dockerpass }}  docker.tutoriaisgnulinux.com.br
+  when: "'slave' in group_names"
+
+- name: "Compose powerdnsSlave | Download image"
+  docker_image:
+   name: docker.tutoriaisgnulinux.com.br/powerdns:{{ powerdnsversion }}
+  when: "'slave' in group_names"
+
+- name: "Compose mysqlSlave | Download image"
+  docker_image:
+   name: docker.tutoriaisgnulinux.com.br/mysql:{{ powerdnsversion }}
+  when: "'slave' in group_names"
+
+- name: "Compose powerdnsSlave | Docker volume"
+  shell: docker volume create mysql && docker volume create data && docker volume create powerdns
+  when: "'slave' in group_names"
+
+- name: "Compose powerdnsMaster | file config"
+  template:
+   src: "{{item.temp}}"
+   dest: "{{item.ori}}"
+   backup: yes
+   mode: 0644
+  with_items:
+   - {ori: /docker-compose/powerdnsSlave/docker-compose.yml, temp: powerdnsSlave_production.docker-compose.yml}
+   - {ori: /var/lib/docker/volumes/mysql/_data/slave.cnf, temp: slave.cnf.j2}
+   - {ori: /docker-compose/powerdnsSlave/environment-slave.env, temp: environment-slave.j2}
+  when: "'slave' in group_names"
+
+- name: "Compose powerdnsSlave | Deploy container"
+  command: docker-compose -f /docker-compose/powerdnsSlave/docker-compose.yml up -d
+  when: "'slave' in group_names"

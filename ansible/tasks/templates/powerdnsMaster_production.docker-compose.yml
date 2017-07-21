@@ -1,0 +1,72 @@
+# version 3 
+version: "3"
+
+services:
+
+ mysql:
+  env_file: './environment-master.env'
+  image: docker.tutoriaisgnulinux.com.br/mysql:{{ powerdnsversion }}
+  privileged: true
+  command: ./start.sh
+  ports:
+   - "3306:3306"
+  networks:
+   - mynet
+  volumes:
+   - mysql:/etc/mysql/conf.d/
+   - data:/var/lib/mysql/
+  hostname: mysql
+  domainname: mysql
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "250m"
+      max-file: "3"
+  networks:
+   mynet:
+    ipv4_address: 192.168.0.2
+
+ powerdnsMaster:
+  env_file: './environment-master.env'
+  depends_on:
+   - mysql
+  image: docker.tutoriaisgnulinux.com.br/powerdns:{{ powerdnsversion }}
+  privileged: true
+  command: ./start.sh
+  ports:
+   - "53:53/udp"
+   - "53:53"
+   - "8080:80"
+  networks:
+   - mynet
+  volumes:
+   - powerdns:/var/log
+  hostname: master
+  domainname: master
+  logging:
+    driver: "json-file"
+    options:
+      max-size: "250m"
+      max-file: "3"
+  networks:
+   mynet:
+    ipv4_address: 192.168.0.3
+
+#
+volumes:
+ mysql:
+  external:
+   name: mysql
+ data:
+  external:
+   name: data
+ powerdns:
+  external:
+   name: powerdns
+
+networks:
+ mynet:
+  driver: bridge
+  ipam:
+   config:
+    - subnet: 192.168.0.0/29

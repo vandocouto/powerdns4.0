@@ -1,0 +1,15 @@
+---
+# tasks file for docker-compose
+
+- name: "Hosts"
+  hosts: all
+  become: yes
+
+  tasks:
+
+    - include: powerdnsMaster_production.yml
+      tags: powerdnsMaster_production
+
+    - include: powerdnsSlave_production.yml
+      tags: powerdnsSlave_production
+

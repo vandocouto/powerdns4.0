@@ -1,0 +1,6 @@
+#### testing  #########
+deb http://ftp.us.debian.org/debian testing main contrib non-free
+
+
+#### unstable #########
+deb http://ftp.us.debian.org/debian unstable main contrib non-free
